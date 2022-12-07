@@ -27,7 +27,7 @@ const Details = ({navigation, route}: Props) => {
 
   const storeData = async (value: number) => {
     let data = await AsyncStorage.getItem('@favorites');
-    let arr = JSON.parse(data as any);
+    let arr = data && JSON.parse(data);
 
     if (!isFavorite) {
       arr ? arr.push(item) : (arr = [item]);

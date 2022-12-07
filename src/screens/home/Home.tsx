@@ -41,7 +41,7 @@ const Home = () => {
         data={artworks}
         renderItem={renderItem}
         onEndReached={() => fetchMoreData()}
-        ListFooterComponent={<ActivityIndicator />}
+        ListFooterComponent={!isLoading ? <ActivityIndicator /> : null}
       />
     </View>
   );

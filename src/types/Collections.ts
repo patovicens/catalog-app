@@ -10,3 +10,7 @@ export type Artwork = {
   is_public_domain: string;
   is_on_view: string;
 };
+
+export interface PaginatedResponse<A> {
+  data: Array<A>;
+}
