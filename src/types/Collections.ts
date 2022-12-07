@@ -1,6 +1,12 @@
 export type Artwork = {
   id: number;
-  thumbnail: [];
+  image_id: string;
   title: string;
-  description: string;
+  artist_display: string;
+  artwork_type_title: string;
+  dimensions: string;
+  date_end: string;
+  medium_display: string;
+  is_public_domain: string;
+  is_on_view: string;
 };

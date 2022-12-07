@@ -1,14 +1,14 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
+import Details from '../screens/details';
 import Favorites from '../screens/favorites';
 import Home from '../screens/home';
+import {Artwork} from '../types/Collections';
 
-// import { Roots } from '@/constants'
-
-// import { headerOptions } from './navigatorOptions'
 export type RootStackParamList = {
-  Home: undefined; // undefined because you aren't passing any params to the home screen
+  Home: undefined;
   Favorites: undefined;
+  Details: {item: Artwork};
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -22,12 +22,28 @@ const MainNavigator = (): JSX.Element => {
       <Stack.Screen
         name={'Home'}
         component={Home}
-        options={{title: 'Art Institute of Chicago'}}
+        options={{
+          title: 'Art Institute of Chicago',
+          headerStyle: {backgroundColor: '#393E46'},
+          headerTintColor: '#EEEEEE',
+        }}
       />
       <Stack.Screen
         name={'Favorites'}
         component={Favorites}
-        // options={{headerShown: true}}
+        options={{
+          headerStyle: {backgroundColor: '#393E46'},
+          headerTintColor: '#EEEEEE',
+        }}
+      />
+      <Stack.Screen
+        name={'Details'}
+        component={Details}
+        options={{
+          title: 'Artwork Details',
+          headerStyle: {backgroundColor: '#393E46'},
+          headerTintColor: '#EEEEEE',
+        }}
       />
     </Stack.Navigator>
   );
