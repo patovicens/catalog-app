@@ -78,12 +78,16 @@ const Details = ({navigation, route}: Props) => {
 
   const url = `${config.IIIF_BASE_URL}/${item.image_id}/full/843,/0/default.jpg`;
 
+  const favoriteIcon = isFavorite
+    ? require('../../images/heart-fill.png')
+    : require('../../images/heart-empty.png');
+
   return (
     <ScrollView style={styles.container}>
       <TouchableOpacity
-        style={[styles.favoriteIcon, isFavorite && styles.isFavorite]}
+        style={styles.favoriteIcon}
         onPress={() => storeData(item.id)}>
-        <Text>FAVORITE</Text>
+        <Image style={styles.icon} source={favoriteIcon} />
       </TouchableOpacity>
       <View>
         <Image style={styles.image} source={{uri: url}} />

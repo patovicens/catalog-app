@@ -23,7 +23,14 @@ const ArtworkItem = ({item}: Props) => {
     <TouchableOpacity
       onPress={() => navigation.navigate('Details', {item})}
       style={styles.container}>
-      <Image style={styles.image} source={{uri: url}} />
+      {item.image_id ? (
+        <Image style={styles.image} source={{uri: url}} />
+      ) : (
+        <Image
+          style={styles.placeholder}
+          source={require('../../images/placeholder.png')}
+        />
+      )}
       <View style={styles.detailsContainer}>
         <Text numberOfLines={2} style={styles.title}>
           {item.title}

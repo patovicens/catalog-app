@@ -9,13 +9,14 @@ import styles from './styles';
 const Home = () => {
   const [artworks, setArtworks] = useState<Artwork[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState<number>(6);
 
   useEffect(() => {
     const fetchArtworks = async () => {
       setIsLoading(true);
       try {
-        const response = await appClient.getArtworks();
-        setArtworks(response.data);
+        const response = await appClient.getArtworks(currentPage, 10);
+        setArtworks(a => [...a, ...response.data]);
       } catch (err) {
         // show toast error
       }
@@ -23,7 +24,11 @@ const Home = () => {
     };
 
     fetchArtworks();
-  }, []);
+  }, [currentPage]);
+
+  const fetchMoreData = async () => {
+    setCurrentPage(currentPage + 1);
+  };
 
   const renderItem = ({item}: {item: Artwork}) => {
     return <ArtworkItem item={item} />;
@@ -32,7 +37,11 @@ const Home = () => {
   return (
     <View style={styles.container}>
       {isLoading && <ActivityIndicator />}
-      <FlatList data={artworks} renderItem={renderItem} />
+      <FlatList
+        data={artworks}
+        renderItem={renderItem}
+        onEndReached={() => fetchMoreData()}
+      />
     </View>
   );
 };

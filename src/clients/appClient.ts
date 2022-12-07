@@ -7,8 +7,8 @@ const client = axios.create({
   headers: {},
 });
 
-const getArtworks = async (): Promise<any> =>
-  client.get('/artworks?page=3&limit=20').then(({data}) => data);
+const getArtworks = async (page: number, limit: number): Promise<any> =>
+  client.get(`/artworks?page=${page}&limit=${limit}`).then(({data}) => data);
 
 const getArtworkById = async (id: number): Promise<any> =>
   client.get(`/artworks/${id}`).then(({data}) => data);

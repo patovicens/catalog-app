@@ -40,6 +40,11 @@ const styles = StyleSheet.create({
   isFavorite: {
     backgroundColor: 'red',
   },
+  icon: {
+    width: 20,
+    height: 20,
+    tintColor: 'red',
+  },
 });
 
 export default styles;

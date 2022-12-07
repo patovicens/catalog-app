@@ -26,6 +26,11 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 12,
   },
+  placeholder: {
+    width: 100,
+    height: 100,
+    tintColor: '#EEEEEE',
+  },
 });
 
 export default styles;
