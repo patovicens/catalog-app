@@ -1,19 +1,13 @@
 import {RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {
-  Button,
-  View,
-  Text,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import config from '../../config';
 import {RootStackParamList} from '../../navigation/mainNavigator';
 import styles from './styles';
+import {Artwork} from '../../types/Collections';
 
 type ScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -27,21 +21,23 @@ type Props = {
 
 const Details = ({navigation, route}: Props) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [icon, setIcon] = useState();
+
   const {item} = route.params;
 
   const storeData = async (value: number) => {
-    let data = await AsyncStorage.getItem('@storage_Key');
+    let data = await AsyncStorage.getItem('@favorites');
     let arr = JSON.parse(data as any);
 
     if (!isFavorite) {
-      arr ? arr.push(value) : (arr = [value]);
-      await AsyncStorage.setItem('@storage_Key', JSON.stringify(arr));
+      arr ? arr.push(item) : (arr = [item]);
+      await AsyncStorage.setItem('@favorites', JSON.stringify(arr));
       setIsFavorite(true);
     } else {
-      const filteredArr = arr.filter((x: number) => {
-        return x !== value;
+      const filteredArr = arr.filter((x: Artwork) => {
+        return x.id !== value;
       });
-      await AsyncStorage.setItem('@storage_Key', JSON.stringify(filteredArr));
+      await AsyncStorage.setItem('@favorites', JSON.stringify(filteredArr));
       setIsFavorite(false);
     }
   };
@@ -49,10 +45,11 @@ const Details = ({navigation, route}: Props) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const value = await AsyncStorage.getItem('@storage_Key');
+        const value = await AsyncStorage.getItem('@favorites');
         if (value !== null) {
           let arr = JSON.parse(value);
-          const found = arr.find((element: number) => element === item.id);
+
+          const found = arr.find((element: Artwork) => element.id === item.id);
           if (found) {
             setIsFavorite(true);
           }
@@ -78,16 +75,20 @@ const Details = ({navigation, route}: Props) => {
 
   const url = `${config.IIIF_BASE_URL}/${item.image_id}/full/843,/0/default.jpg`;
 
-  const favoriteIcon = isFavorite
-    ? require('../../images/heart-fill.png')
-    : require('../../images/heart-empty.png');
+  useEffect(() => {
+    if (isFavorite) {
+      setIcon(require('../../images/heart-fill.png'));
+    } else {
+      setIcon(require('../../images/heart-empty.png'));
+    }
+  }, [isFavorite]);
 
   return (
     <ScrollView style={styles.container}>
       <TouchableOpacity
         style={styles.favoriteIcon}
         onPress={() => storeData(item.id)}>
-        <Image style={styles.icon} source={favoriteIcon} />
+        <Image style={styles.icon} source={icon} />
       </TouchableOpacity>
       <View>
         <Image style={styles.image} source={{uri: url}} />
@@ -111,10 +112,12 @@ const Details = ({navigation, route}: Props) => {
         </Text>
         <Text style={styles.subtitle}>Is it on Display? </Text>
         <Text style={styles.description}>{item.is_on_view ? 'Yes' : 'No'}</Text>
-        <Button
-          title="Go to Favorites"
-          onPress={() => navigation.navigate('Favorites')}
-        />
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Favorites')}>
+          <Text style={styles.buttonText}>GO TO FAVORITES</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

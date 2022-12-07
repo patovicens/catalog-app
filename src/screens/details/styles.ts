@@ -3,12 +3,11 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 10001,
     backgroundColor: '#222831',
     padding: 12,
   },
   contentContainer: {
-    paddingVertical: 20,
+    paddingVertical: 30,
   },
   image: {
     height: 500,
@@ -44,6 +43,20 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     tintColor: 'red',
+  },
+  button: {
+    backgroundColor: '#00ADB5',
+    borderRadius: 5,
+    paddingVertical: 8,
+    marginVertical: 16,
+    borderWidth: 1,
+    width: '100%',
+  },
+  buttonText: {
+    alignSelf: 'center',
+    fontWeight: '600',
+    color: '#EEEEEE',
+    fontSize: 16,
   },
 });
 

@@ -4,15 +4,12 @@ import React from 'react';
 import styles from './styles';
 import config from '../../config';
 import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../navigation/mainNavigator';
 import {Artwork} from '../../types/Collections';
+import {StackNavigation} from '../../navigation/mainNavigator';
 
 type Props = {
   item: Artwork;
 };
-
-export type StackNavigation = NativeStackNavigationProp<RootStackParamList>;
 
 const ArtworkItem = ({item}: Props) => {
   const navigation = useNavigation<StackNavigation>();
@@ -21,6 +18,7 @@ const ArtworkItem = ({item}: Props) => {
 
   return (
     <TouchableOpacity
+      activeOpacity={1}
       onPress={() => navigation.navigate('Details', {item})}
       style={styles.container}>
       {item.image_id ? (

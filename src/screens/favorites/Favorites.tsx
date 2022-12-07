@@ -1,28 +1,37 @@
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React from 'react';
-import {Button, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, View} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import ArtworkItem from '../../components/artworkItem';
-import {RootStackParamList} from '../../navigation/mainNavigator';
-
-// type ProfileScreenNavigationProp = NativeStackNavigationProp<
-//   RootStackParamList,
-//   'Home'
-// >;
-
-// type Props = {
-//   navigation: ProfileScreenNavigationProp;
-// };
+import {Artwork} from '../../types/Collections';
+import styles from './styles';
 
 const Favorites = () => {
+  const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@favorites');
+        if (value !== null) {
+          let arr = JSON.parse(value);
+          setFavorites(arr);
+        }
+      } catch (e) {
+        // error reading value
+      }
+    };
+
+    getData();
+  }, [favorites]);
+
+  const renderItem = ({item}: {item: Artwork}) => {
+    return <ArtworkItem item={item} />;
+  };
+
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <ArtworkItem title={'RANDOM TITLE YOO FAVORITES'} />
-      {/* <Text>Details Screen</Text>
-      <Button
-        title="Go to Details... again"
-        onPress={() => navigation.navigate('Details')}
-      /> */}
+    <View style={styles.container}>
+      <FlatList data={favorites} renderItem={renderItem} />
     </View>
   );
 };

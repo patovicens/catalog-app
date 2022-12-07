@@ -1,19 +1,28 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 import React from 'react';
+import {Button} from 'react-native';
 import Details from '../screens/details';
 import Favorites from '../screens/favorites';
 import Home from '../screens/home';
 import {Artwork} from '../types/Collections';
+import {useNavigation} from '@react-navigation/native';
 
 export type RootStackParamList = {
   Home: undefined;
-  Favorites: undefined;
   Details: {item: Artwork};
+  Favorites: undefined;
 };
+
+export type StackNavigation = NativeStackNavigationProp<RootStackParamList>;
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const MainNavigator = (): JSX.Element => {
+  const navigation = useNavigation<StackNavigation>();
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -26,6 +35,13 @@ const MainNavigator = (): JSX.Element => {
           title: 'Art Institute of Chicago',
           headerStyle: {backgroundColor: '#393E46'},
           headerTintColor: '#EEEEEE',
+          headerRight: () => (
+            <Button
+              onPress={() => navigation.navigate('Favorites')}
+              title="Favs"
+              color="#EEEEEE"
+            />
+          ),
         }}
       />
       <Stack.Screen
