@@ -60,17 +60,6 @@ const Details = ({navigation, route}: Props) => {
     };
 
     getData();
-    // const clearAll = async () => {
-    //   try {
-    //     await AsyncStorage.clear();
-    //   } catch (e) {
-    //     // clear error
-    //   }
-
-    //   console.log('Done.');
-    // };
-
-    // clearAll();
   }, [item.id]);
 
   const url = `${config.IIIF_BASE_URL}/${item.image_id}/full/843,/0/default.jpg`;
