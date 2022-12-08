@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 
@@ -35,7 +35,13 @@ const Favorites = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList data={favorites} renderItem={renderItem} />
+      {favorites.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No favorites yet, add some!</Text>
+        </View>
+      ) : (
+        <FlatList data={favorites} renderItem={renderItem} />
+      )}
     </View>
   );
 };

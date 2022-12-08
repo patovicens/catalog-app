@@ -9,7 +9,6 @@ const App = (): JSX.Element => {
   useEffect(() => {
     const getFirebaseToken = async () => {
       const generatedToken = await messaging().getToken();
-      console.log(generatedToken);
       return generatedToken;
     };
 
