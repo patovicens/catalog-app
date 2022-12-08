@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, View} from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import appClient from '../../clients/appClient';
 import ArtworkItem from '../../components/artworkItem';
@@ -18,7 +19,10 @@ const Home = () => {
         const response = await appClient.getArtworks(currentPage, 10);
         setArtworks(a => [...a, ...response.data]);
       } catch (err) {
-        // show toast error
+        Toast.show({
+          type: 'error',
+          text1: 'Error loading data!',
+        });
       }
       setIsLoading(false);
     };
@@ -36,12 +40,11 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      {isLoading && <ActivityIndicator />}
       <FlatList
         data={artworks}
         renderItem={renderItem}
         onEndReached={() => fetchMoreData()}
-        ListFooterComponent={!isLoading ? <ActivityIndicator /> : null}
+        ListFooterComponent={isLoading ? <ActivityIndicator /> : null}
       />
     </View>
   );

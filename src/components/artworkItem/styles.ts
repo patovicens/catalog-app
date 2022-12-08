@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     flex: 1,
-    paddingLeft: 8,
+    paddingLeft: 12,
   },
   title: {
     fontSize: 18,

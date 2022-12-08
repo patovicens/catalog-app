@@ -3,6 +3,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 import config from '../../config';
 import {RootStackParamList} from '../../navigation/mainNavigator';
@@ -33,6 +34,10 @@ const Details = ({navigation, route}: Props) => {
       arr ? arr.push(item) : (arr = [item]);
       await AsyncStorage.setItem('@favorites', JSON.stringify(arr));
       setIsFavorite(true);
+      Toast.show({
+        type: 'success',
+        text1: 'Successfully added to favorites!',
+      });
     } else {
       const filteredArr = arr.filter((x: Artwork) => {
         return x.id !== value;
@@ -55,7 +60,10 @@ const Details = ({navigation, route}: Props) => {
           }
         }
       } catch (e) {
-        // error reading value
+        Toast.show({
+          type: 'error',
+          text1: 'Error loading data!',
+        });
       }
     };
 

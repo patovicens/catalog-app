@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 import ArtworkItem from '../../components/artworkItem';
 import {Artwork} from '../../types/Collections';
@@ -18,7 +19,10 @@ const Favorites = () => {
           setFavorites(arr);
         }
       } catch (e) {
-        // error reading value
+        Toast.show({
+          type: 'error',
+          text1: 'Error loading data!',
+        });
       }
     };
 

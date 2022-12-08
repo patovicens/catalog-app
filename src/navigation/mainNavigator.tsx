@@ -3,12 +3,13 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import React from 'react';
-import {Button} from 'react-native';
+import {View, TouchableOpacity, Image} from 'react-native';
 import Details from '../screens/details';
 import Favorites from '../screens/favorites';
 import Home from '../screens/home';
 import {Artwork} from '../types/Collections';
 import {useNavigation} from '@react-navigation/native';
+import styles from './styles';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -23,6 +24,25 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const MainNavigator = (): JSX.Element => {
   const navigation = useNavigation<StackNavigation>();
 
+  const headerRight = () => (
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => navigation.navigate('Favorites')}>
+      <Image style={styles.icon} source={require('../images/favorite.png')} />
+    </TouchableOpacity>
+  );
+
+  const headerOptions = (
+    title?: string | (() => void),
+    showRightIcon?: boolean,
+  ): Record<string, unknown> => ({
+    headerTitle: title,
+    headerTitleAlign: 'center',
+    headerTintColor: '#EEEEEE',
+    headerStyle: {backgroundColor: '#393E46'},
+    headerRight: showRightIcon ? headerRight : () => <View />,
+  });
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -31,35 +51,17 @@ const MainNavigator = (): JSX.Element => {
       <Stack.Screen
         name={'Home'}
         component={Home}
-        options={{
-          title: 'Art Institute of Chicago',
-          headerStyle: {backgroundColor: '#393E46'},
-          headerTintColor: '#EEEEEE',
-          headerRight: () => (
-            <Button
-              onPress={() => navigation.navigate('Favorites')}
-              title="Favs"
-              color="#EEEEEE"
-            />
-          ),
-        }}
+        options={headerOptions('Art Institue of Chicago', true)}
       />
       <Stack.Screen
         name={'Favorites'}
         component={Favorites}
-        options={{
-          headerStyle: {backgroundColor: '#393E46'},
-          headerTintColor: '#EEEEEE',
-        }}
+        options={headerOptions('Favorites')}
       />
       <Stack.Screen
         name={'Details'}
         component={Details}
-        options={{
-          title: 'Artwork Details',
-          headerStyle: {backgroundColor: '#393E46'},
-          headerTintColor: '#EEEEEE',
-        }}
+        options={headerOptions('Artwork Details')}
       />
     </Stack.Navigator>
   );
